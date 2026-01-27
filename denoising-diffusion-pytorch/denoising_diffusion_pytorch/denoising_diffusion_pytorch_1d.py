@@ -458,6 +458,8 @@ class GaussianDiffusion1D(Module):
         alphas_cumprod = torch.cumprod(alphas, dim=0)
         alphas_cumprod_prev = F.pad(alphas_cumprod[:-1], (1, 0), value = 1.)
 
+        self.betas_for_rie = betas
+
         timesteps, = betas.shape
         self.num_timesteps = int(timesteps)
 
@@ -564,37 +566,30 @@ class GaussianDiffusion1D(Module):
     def constant_noise_scaling(self, k_cns, t, x_shape):
         return 1/ np.sqrt(k_cns)
 
-    
-    def riemannian(self, noise, tau):
 
-        bs, C, S = noise.shape
+    def riemannian(self, t, x_t, pred_noise, diffusion_noise):
 
-        # compute outer products across channels per pixel: ε_i * ε_j
-        cov = noise[:, :, None, :] * noise[:, None, :, :]
-        cov = cov.squeeze(-1)
+        eye = torch.eye(2, device=x_t.device, dtype=x_t.dtype)
 
-        # shape: (bs, C, C)
-        eigvals, eigvecs = torch.linalg.eigh(cov)  # (..., C), (..., C, C)
+        z = x_t.squeeze(-1)
 
-        # Clamp for numerical stability
-        eigvals_clamped = torch.clamp(eigvals, min=1e-5)
+        outer = z.T @ z
+        outer = outer / z.shape[0]  # empirical Σ_t
 
-        # sqrt of eigenvalues
-        sqrt_eigvals = eigvals_clamped #torch.sqrt(eigvals_clamped)  # (..., C)
+        beta_t = self.betas_for_rie[t[0].item()]
+        alpha_t = 1 - beta_t        
+        alpha_bar = extract(self.alphas_cumprod, t, x_t.shape).mean().item()
 
-        # Recompose: Q * sqrt(Lambda) * Q^T
-        sqrt_cov = (
-            eigvecs * sqrt_eigvals.unsqueeze(-2)
-        ) @ eigvecs.transpose(-2, -1) 
+        Sigma = (1 / alpha_t) * (outer - ( beta_t / (1-alpha_bar) ) * eye)
 
-        I = torch.eye(C, device=sqrt_cov.device, dtype=sqrt_cov.dtype)
-        I = I.unsqueeze(0).expand(bs, C, C)   # bs × C × C
+        print(alpha_t)
+        print(( beta_t / (1-alpha_bar) ))
+        print(outer)
 
-        interpolated_cov = tau * sqrt_cov + I
+        print(Sigma)
 
-        pred_noise = torch.einsum('bij,bjh->bih', interpolated_cov, noise)
+        return diffusion_noise
 
-        return pred_noise
 
     def model_predictions(self, x, t, k, tau, n_chunks, x_self_cond = None, clip_x_start = False, rederive_pred_noise = False, model_forward_kwargs: dict = dict()):
 
@@ -609,9 +604,6 @@ class GaussianDiffusion1D(Module):
 
         if self.objective == 'pred_noise':
             pred_noise = model_output
-
-            if tau > 0.0:
-                pred_noise = self.riemannian(pred_noise, tau)
             
             pred_noise = pred_noise * self.constant_score_scaling(k, t, x.shape)
 
@@ -655,9 +647,8 @@ class GaussianDiffusion1D(Module):
         model_mean, _, model_log_variance, x_start, model_output_original = self.p_mean_variance(x = x, t = batched_times, k = k, tau = tau, n_chunks = n_chunks, x_self_cond = x_self_cond, clip_denoised = clip_denoised, model_forward_kwargs = model_forward_kwargs)
         noise = torch.randn_like(x) if t > 0 else torch.zeros_like(x)
 
-        #noise = self.normalized_riemannian(k_cns, x, batched_times, model_output_original, tau, n_chunks, noise)
-
-        #noise = noise * self.constant_noise_scaling(k_cns, batched_times, x.shape) # constant noise rescaling
+        if tau > 0.0:
+            noise = self.riemannian(batched_times, x, model_output_original, noise)
 
         pred_img = model_mean + (0.5 * model_log_variance).exp() * noise
         return pred_img, x_start
