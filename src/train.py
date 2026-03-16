@@ -1,6 +1,7 @@
 import torch
 import torch.optim as optim
 from torch.utils.data import TensorDataset, DataLoader
+import os
 
 from .model import MLP       
 from .dataset import generate_gaussian_mixture
@@ -17,9 +18,8 @@ n_diffusion_steps = N_DIFFUSION_STEPS
 torch.manual_seed(42)     
 
 # ---------- training function (train_model) ----------
-def train_model(config, temperature=1.0, log_every=5000):
+def train_model(name, dataset_config, existing_checkpoint=None, load_file=None, k=1.0, log_every=5000):
 	"""Trains model according to a dataset defined by dataset_config"""
-	name, dataset_config = config
 
 	x0_all = generate_gaussian_mixture(
         n_samples=dataset_config["n_samples"],
@@ -38,6 +38,12 @@ def train_model(config, temperature=1.0, log_every=5000):
 	)
 
 	model = MLP().to(device)
+	if existing_checkpoint is not None:
+		print(f"Loading {existing_checkpoint}")
+		checkpoint = torch.load(existing_checkpoint, map_location=device)
+		model.load_state_dict(checkpoint)
+		model.eval()
+
 	opt = optim.Adam(model.parameters(), lr=lr)
 	model.train()
 
@@ -66,15 +72,26 @@ def train_model(config, temperature=1.0, log_every=5000):
 		opt.step()
 
 		if step % log_every == 0:
-			print(f"temperature={temperature} step={step} loss={loss.item():.4f}")
+			print(f"temperature={k} step={step} loss={loss.item():.4f}")
 
-	save_path = f"{ckpt_dir}/{name}_{temperature:.1f}.pt"
+	save_path = f"{ckpt_dir}/{name}_{k:.1f}.pt"
 	torch.save(model.state_dict(), save_path)
 	print(f"Trained model saved to {save_path}")
 
 	return model
 
 
-if __name__ == "main":
-	for dataset_config in DATASETS.items():
-		model = train_model(dataset_config)
+if __name__ == "__main__":	
+
+	dataset_names = ["barrier_overlapping", "composed_overlapping"]
+	k = 1.0
+
+	for name in dataset_names:
+		
+		dataset_config = DATASETS[name]
+		existing_checkpoint = f"{ckpt_dir}/{name}_{k:.1f}.pt"
+		
+		if os.path.exists(existing_checkpoint):
+			model = train_model(name, dataset_config, existing_checkpoint)
+		else:
+			model = train_model(name, dataset_config)
