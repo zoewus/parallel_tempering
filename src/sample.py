@@ -17,11 +17,17 @@ ckpt_dir = CKPT_DIR
 
 # ---------- sampling utilities (compute_score, compute_tsr, etc.) ----------
 @torch.no_grad()
-def compute_score(model, x, t_batch):
+def compute_score(model, x, t, k, sigma, dataset_config):
 	"""Computes score = - epsilon / √(1 - α_bar)"""
+	temp_schedule = compute_tsr_schedule(k, sigma, dataset_config)
+
+	temp_t = temp_schedule[t]
+
+	t_batch = t * torch.ones_like(x)
+
 	eps_hat = model(x, t_batch)
-	a_bar = alpha_bars[t_batch[0, 0].long().item()]
-	return -eps_hat / torch.sqrt(1.0 - a_bar)
+	a_bar = alpha_bars[t]
+	return -eps_hat * temp_t / torch.sqrt(1.0 - a_bar)
 
 
 @torch.no_grad()
@@ -38,22 +44,22 @@ def r_deriv_func(x, x_hat, s):
 
 
 @torch.no_grad()
-def compute_log_transition_ratio(model, x, x_hat, t_batch, temp_t, step_size):
+def compute_log_transition_ratio(model, x, x_hat, t, step_size, k, sigma, dataset_config):
 	"""Computes log [ k(x | x_hat) / k(x_hat | x) ]"""
-	score_x = compute_score(model, x, t_batch) 
-	score_x_hat = compute_score(model, x_hat, t_batch) 
+	score_x = compute_score(model, x, t, k, sigma, dataset_config) 
+	score_x_hat = compute_score(model, x_hat, t, k, sigma, dataset_config) 
 
-	forward_diff = x_hat - x - step_size * score_x * temp_t
+	forward_diff = x_hat - x - step_size * score_x 
 	forward_sq = forward_diff**2
 	
-	backward_diff = x - x_hat - step_size * score_x_hat * temp_t
+	backward_diff = x - x_hat - step_size * score_x_hat 
 	backward_sq = backward_diff**2
 	
 	return (forward_sq - backward_sq) / (4.0 * step_size)
 
 
 @torch.no_grad()
-def compute_score_integral(model, x, x_hat, t_batch, temp_t, n_segments):
+def compute_score_integral(model, x, x_hat, t, k, sigma, dataset_config, n_segments=10):
 	"""Computes energy of a noise-based model through integration"""
 	s = torch.linspace(0.0, 1.0, n_segments, device=device)
 	
@@ -61,23 +67,21 @@ def compute_score_integral(model, x, x_hat, t_batch, temp_t, n_segments):
 	r_deriv = r_deriv_func(x, x_hat, s)
 	
 	r_flat = r.reshape(-1, 1)
-	t_flat = t_batch[0].item() * torch.ones_like(r_flat)
-	epsilon = model(r_flat, t_flat).reshape(r.shape[0], -1) * temp_t
-	
-	integrand = epsilon * r_deriv
+	score_hat = compute_score(model, r_flat, t, k, sigma, dataset_config).reshape(r.shape[0], -1) 
+
+	integrand = score_hat * r_deriv
 	f = -torch.trapz(integrand, s, dim=1).unsqueeze(-1)
 	
 	return f
 
 
 @torch.no_grad()
-def compute_correction(model, x, x_hat, t_batch, temp_t, step_size, num_segments=10):
+def compute_correction(model, x, x_hat, t, step_size, k, sigma, dataset_config):
 	"""Computes acceptance rate for MALA and returns corrected x"""
-	f = compute_score_integral(model, x, x_hat, t_batch, temp_t, num_segments)
-	log_transition_ratio = compute_log_transition_ratio(model, x, x_hat, t_batch, temp_t, step_size)
-	sigma_t = torch.sqrt(1 - alpha_bars[t_batch[0].item()])
+	f = compute_score_integral(model, x, x_hat, t, k, sigma, dataset_config)
+	log_transition_ratio = compute_log_transition_ratio(model, x, x_hat, t, step_size, k, sigma, dataset_config)
 
-	a = torch.clamp(torch.exp(f / sigma_t + log_transition_ratio), max=1.0)
+	a = torch.clamp(torch.exp(f + log_transition_ratio), max=1.0) # note: we do f and not f/sigma_t because sigma term already in score_hat
 	u = torch.rand_like(a)
 	accept_mask = (u < a).float()
 	x = accept_mask * x_hat + (1 - accept_mask) * x
@@ -125,17 +129,10 @@ def sampling(model, dataset_config, method, k=1.0, sigma=1.0, step_scale=None, n
 	"""Sampling algorithm for DDPM, ULA, and MALA"""
 	model.eval()
 
-	temp_schedule = compute_tsr_schedule(k, sigma, dataset_config)
-
 	n_samples = dataset_config["n_samples"]
-
 	x = torch.randn(n_samples, 1, device=device)
-	ones = torch.ones(n_samples, 1, device=device)
 
 	for t in ts_desc:
-		t_batch = (t * ones).long()
-		
-		temp_t = temp_schedule[t]
 	  
 		alpha_t = alphas[t]
 		beta_t = betas[t]
@@ -143,27 +140,30 @@ def sampling(model, dataset_config, method, k=1.0, sigma=1.0, step_scale=None, n
 		sqrt_alpha_t = torch.sqrt(alpha_t)
 		sqrt_beta_t = torch.sqrt(beta_t)
 
-		score_hat = compute_score(model, x, t_batch)
-		noise = torch.randn_like(x)
 
 		if method in ["DDPM"]:
-
-			x = (x + temp_t * beta_t * score_hat) / sqrt_alpha_t + sqrt_beta_t * noise
+			score_hat = compute_score(model, x, t, k, sigma, dataset_config)
+			noise = torch.randn_like(x)
+			x = (x + beta_t * score_hat) / sqrt_alpha_t + sqrt_beta_t * noise
 
 		elif method in ["ULA", "MALA"]:
 
-			x = (x + temp_t * beta_t * score_hat) / sqrt_alpha_t + sqrt_beta_t * noise
+			score_hat = compute_score(model, x, t, k, sigma, dataset_config)
+			noise = torch.randn_like(x)
+			x = (x + beta_t * score_hat) / sqrt_alpha_t + sqrt_beta_t * noise
 
 			step_size = beta_t * torch.tensor(step_scale)
 
 			for langevin_step in range(n_langevin_steps):
 
+				score_hat = compute_score(model, x, t, k, sigma, dataset_config)
+
 				noise = torch.randn_like(x)
-				eps_hat = - model(x, t_batch) / torch.sqrt(1 - alpha_bar_t)
-				x_hat = x + temp_t * step_size * eps_hat + torch.sqrt(2.0 * step_size) * noise	
+
+				x_hat = x + step_size * score_hat + torch.sqrt(2.0 * step_size) * noise	
 				
 				if method == "MALA":
-					x, a = compute_correction(model, x, x_hat, t_batch, temp_t, step_size)
+					x, a = compute_correction(model, x, x_hat, t, step_size, k, sigma, dataset_config)
 
 						# Add this inside the ULA loop
 					if t in [90, 50, 10, 1] and langevin_step == 0:
