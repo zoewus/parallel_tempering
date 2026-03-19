@@ -116,7 +116,7 @@ def encode_dataset_name(name: str) -> str:
 	return base_map.get(name, name)
 
 
-def plot_samples_grid(dataset_names, methods, k=1.0, sigma=1.0,  x_limit=6, step_scale=None, n_langevin_steps=None, save_dir="figures", figsize_per_panel=(5,4)):
+def plot_samples_grid(dataset_names, methods, k=1.0, sigma=1.0, x_limit=6, step_scale=None, n_langevin_steps=None, save_dir="figures", figsize_per_panel=(5,4)):
 	"""Generate samples and plot against true distribution"""
 	os.makedirs(save_dir, exist_ok=True)
 
@@ -209,18 +209,19 @@ def plot_samples_grid(dataset_names, methods, k=1.0, sigma=1.0,  x_limit=6, step
 
 if __name__ == "__main__":
 
-	methods = ["MALA"]
+	methods = ["DDPM", "DDPM-MT" "ULA", "ULA-MT", "MALA", "MALA-MT"]
 
-	dataset_names = ["barrier", "composed"]
+	dataset_names = ["composed"]
 
-	step_scale_list = [0.001, 0.01, 0.1, 0.5]
+	# step_scale_list = [0.001, 0.01, 0.1, 0.5]
 
-	n_langevin_steps_list = [3, 5, 10, 15]
+	# n_langevin_steps_list = [3, 5, 10, 15]
 
-	for k in [4.0]:
+	for k in [4.0, 1.0, 0.25]:
 
-		_ = samples_tuning(step_scale_list, n_langevin_steps_list, dataset_names, methods, k=k, sigma=None, x_limit=6)
+		_ = plot_samples_grid(dataset_names, methods, k=k, sigma=None, x_limit = 12, step_scale=0.5, n_langevin_steps=5, save_dir="figures")
+		# _ = samples_tuning(step_scale_list, n_langevin_steps_list, dataset_names, methods, k=k, sigma=None, x_limit=6)
 
 		sys.stdout.flush()
 
-		# _ = plot_samples_grid(dataset_names, methods, k=k, sigma=None, x_limit=12, save_dir="figures")
+		# _ = plot_samples_grid(dataset_names, methods, k=k, sigma=None, x_limit=12, save_dir="figures")`

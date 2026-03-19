@@ -1,2 +1,529 @@
-training complete
-Successfully finished training for 50000 steps
+t=90, beta=0.188753, step_size=0.000189, steps=3
+  accept magnitude: 1.0000
+  score magnitude: 0.7470
+  noise magnitude: 0.8001
+  update magnitude: 0.0001
+t=50, beta=0.031546, step_size=0.000032, steps=3
+  accept magnitude: 1.0000
+  score magnitude: 0.9706
+  noise magnitude: 0.8000
+  update magnitude: 0.0000
+t=10, beta=0.005530, step_size=0.000006, steps=3
+  accept magnitude: 1.0000
+  score magnitude: 1.5739
+  noise magnitude: 0.7970
+  update magnitude: 0.0000
+t=1, beta=0.001117, step_size=0.000001, steps=3
+  accept magnitude: 1.0000
+  score magnitude: 1.7515
+  noise magnitude: 0.7995
+  update magnitude: 0.0000
+method=MALA, steps=3, step_scale=0.001
+mean = 0.006611386779695749
+var  = 9.2355318069458
+t=90, beta=0.188753, step_size=0.000189, steps=5
+  accept magnitude: 1.0000
+  score magnitude: 0.7467
+  noise magnitude: 0.7962
+  update magnitude: 0.0001
+t=50, beta=0.031546, step_size=0.000032, steps=5
+  accept magnitude: 1.0000
+  score magnitude: 0.9685
+  noise magnitude: 0.7979
+  update magnitude: 0.0000
+t=10, beta=0.005530, step_size=0.000006, steps=5
+  accept magnitude: 1.0000
+  score magnitude: 1.5726
+  noise magnitude: 0.7986
+  update magnitude: 0.0000
+t=1, beta=0.001117, step_size=0.000001, steps=5
+  accept magnitude: 1.0000
+  score magnitude: 1.7469
+  noise magnitude: 0.8004
+  update magnitude: 0.0000
+method=MALA, steps=5, step_scale=0.001
+mean = 0.014893313869833946
+var  = 9.236698150634766
+t=90, beta=0.188753, step_size=0.000189, steps=10
+  accept magnitude: 1.0000
+  score magnitude: 0.7494
+  noise magnitude: 0.7950
+  update magnitude: 0.0001
+t=50, beta=0.031546, step_size=0.000032, steps=10
+  accept magnitude: 1.0000
+  score magnitude: 0.9675
+  noise magnitude: 0.7931
+  update magnitude: 0.0000
+t=10, beta=0.005530, step_size=0.000006, steps=10
+  accept magnitude: 1.0000
+  score magnitude: 1.5700
+  noise magnitude: 0.7963
+  update magnitude: 0.0000
+t=1, beta=0.001117, step_size=0.000001, steps=10
+  accept magnitude: 1.0000
+  score magnitude: 1.7455
+  noise magnitude: 0.7946
+  update magnitude: 0.0000
+method=MALA, steps=10, step_scale=0.001
+mean = 0.0022845356725156307
+var  = 9.234769821166992
+t=90, beta=0.188753, step_size=0.000189, steps=15
+  accept magnitude: 1.0000
+  score magnitude: 0.7458
+  noise magnitude: 0.7988
+  update magnitude: 0.0001
+t=50, beta=0.031546, step_size=0.000032, steps=15
+  accept magnitude: 1.0000
+  score magnitude: 0.9683
+  noise magnitude: 0.7991
+  update magnitude: 0.0000
+t=10, beta=0.005530, step_size=0.000006, steps=15
+  accept magnitude: 1.0000
+  score magnitude: 1.5788
+  noise magnitude: 0.7966
+  update magnitude: 0.0000
+t=1, beta=0.001117, step_size=0.000001, steps=15
+  accept magnitude: 1.0000
+  score magnitude: 1.7512
+  noise magnitude: 0.8017
+  update magnitude: 0.0000
+method=MALA, steps=15, step_scale=0.001
+mean = 0.0229550339281559
+var  = 9.252375602722168
+t=90, beta=0.188753, step_size=0.001888, steps=3
+  accept magnitude: 1.0000
+  score magnitude: 0.7460
+  noise magnitude: 0.7984
+  update magnitude: 0.0014
+t=50, beta=0.031546, step_size=0.000315, steps=3
+  accept magnitude: 1.0000
+  score magnitude: 0.9659
+  noise magnitude: 0.8015
+  update magnitude: 0.0003
+t=10, beta=0.005530, step_size=0.000055, steps=3
+  accept magnitude: 1.0000
+  score magnitude: 1.5838
+  noise magnitude: 0.7989
+  update magnitude: 0.0001
+t=1, beta=0.001117, step_size=0.000011, steps=3
+  accept magnitude: 1.0000
+  score magnitude: 1.7470
+  noise magnitude: 0.7995
+  update magnitude: 0.0000
+method=MALA, steps=3, step_scale=0.01
+mean = 0.03393326699733734
+var  = 9.233014106750488
+t=90, beta=0.188753, step_size=0.001888, steps=5
+  accept magnitude: 1.0000
+  score magnitude: 0.7482
+  noise magnitude: 0.7922
+  update magnitude: 0.0014
+t=50, beta=0.031546, step_size=0.000315, steps=5
+  accept magnitude: 1.0000
+  score magnitude: 0.9664
+  noise magnitude: 0.7964
+  update magnitude: 0.0003
+t=10, beta=0.005530, step_size=0.000055, steps=5
+  accept magnitude: 1.0000
+  score magnitude: 1.5786
+  noise magnitude: 0.8012
+  update magnitude: 0.0001
+t=1, beta=0.001117, step_size=0.000011, steps=5
+  accept magnitude: 1.0000
+  score magnitude: 1.7552
+  noise magnitude: 0.8007
+  update magnitude: 0.0000
+method=MALA, steps=5, step_scale=0.01
+mean = 0.03775584325194359
+var  = 9.238733291625977
+t=90, beta=0.188753, step_size=0.001888, steps=10
+  accept magnitude: 1.0000
+  score magnitude: 0.7447
+  noise magnitude: 0.8003
+  update magnitude: 0.0014
+t=50, beta=0.031546, step_size=0.000315, steps=10
+  accept magnitude: 1.0000
+  score magnitude: 0.9665
+  noise magnitude: 0.7965
+  update magnitude: 0.0003
+t=10, beta=0.005530, step_size=0.000055, steps=10
+  accept magnitude: 1.0000
+  score magnitude: 1.5700
+  noise magnitude: 0.7973
+  update magnitude: 0.0001
+t=1, beta=0.001117, step_size=0.000011, steps=10
+  accept magnitude: 1.0000
+  score magnitude: 1.7427
+  noise magnitude: 0.8008
+  update magnitude: 0.0000
+method=MALA, steps=10, step_scale=0.01
+mean = 0.06406077742576599
+var  = 9.242105484008789
+t=90, beta=0.188753, step_size=0.001888, steps=15
+  accept magnitude: 1.0000
+  score magnitude: 0.7427
+  noise magnitude: 0.7976
+  update magnitude: 0.0014
+t=50, beta=0.031546, step_size=0.000315, steps=15
+  accept magnitude: 1.0000
+  score magnitude: 0.9679
+  noise magnitude: 0.7969
+  update magnitude: 0.0003
+t=10, beta=0.005530, step_size=0.000055, steps=15
+  accept magnitude: 1.0000
+  score magnitude: 1.5747
+  noise magnitude: 0.8011
+  update magnitude: 0.0001
+t=1, beta=0.001117, step_size=0.000011, steps=15
+  accept magnitude: 1.0000
+  score magnitude: 1.7447
+  noise magnitude: 0.7994
+  update magnitude: 0.0000
+method=MALA, steps=15, step_scale=0.01
+mean = 0.04956892877817154
+var  = 9.239333152770996
+t=90, beta=0.188753, step_size=0.018875, steps=3
+  accept magnitude: 0.9995
+  score magnitude: 0.7462
+  noise magnitude: 0.7954
+  update magnitude: 0.0141
+t=50, beta=0.031546, step_size=0.003155, steps=3
+  accept magnitude: 0.9999
+  score magnitude: 0.9685
+  noise magnitude: 0.8017
+  update magnitude: 0.0031
+t=10, beta=0.005530, step_size=0.000553, steps=3
+  accept magnitude: 1.0000
+  score magnitude: 1.5706
+  noise magnitude: 0.7963
+  update magnitude: 0.0009
+t=1, beta=0.001117, step_size=0.000112, steps=3
+  accept magnitude: 1.0000
+  score magnitude: 1.7413
+  noise magnitude: 0.8030
+  update magnitude: 0.0002
+method=MALA, steps=3, step_scale=0.1
+mean = 0.09628330916166306
+var  = 9.23717212677002
+t=90, beta=0.188753, step_size=0.018875, steps=5
+  accept magnitude: 0.9995
+  score magnitude: 0.7426
+  noise magnitude: 0.7963
+  update magnitude: 0.0140
+t=50, beta=0.031546, step_size=0.003155, steps=5
+  accept magnitude: 1.0000
+  score magnitude: 0.9654
+  noise magnitude: 0.7957
+  update magnitude: 0.0030
+t=10, beta=0.005530, step_size=0.000553, steps=5
+  accept magnitude: 1.0000
+  score magnitude: 1.5706
+  noise magnitude: 0.7966
+  update magnitude: 0.0009
+t=1, beta=0.001117, step_size=0.000112, steps=5
+  accept magnitude: 1.0000
+  score magnitude: 1.7427
+  noise magnitude: 0.8016
+  update magnitude: 0.0002
+method=MALA, steps=5, step_scale=0.1
+mean = 0.13878233730793
+var  = 9.22989559173584
+t=90, beta=0.188753, step_size=0.018875, steps=10
+  accept magnitude: 0.9997
+  score magnitude: 0.7405
+  noise magnitude: 0.8033
+  update magnitude: 0.0140
+t=50, beta=0.031546, step_size=0.003155, steps=10
+  accept magnitude: 0.9999
+  score magnitude: 0.9659
+  noise magnitude: 0.7996
+  update magnitude: 0.0030
+t=10, beta=0.005530, step_size=0.000553, steps=10
+  accept magnitude: 1.0000
+  score magnitude: 1.5619
+  noise magnitude: 0.7949
+  update magnitude: 0.0009
+t=1, beta=0.001117, step_size=0.000112, steps=10
+  accept magnitude: 1.0000
+  score magnitude: 1.7269
+  noise magnitude: 0.7947
+  update magnitude: 0.0002
+method=MALA, steps=10, step_scale=0.1
+mean = 0.13991719484329224
+var  = 9.236340522766113
+t=90, beta=0.188753, step_size=0.018875, steps=15
+  accept magnitude: 0.9996
+  score magnitude: 0.7470
+  noise magnitude: 0.7968
+  update magnitude: 0.0141
+t=50, beta=0.031546, step_size=0.003155, steps=15
+  accept magnitude: 0.9999
+  score magnitude: 0.9640
+  noise magnitude: 0.7911
+  update magnitude: 0.0030
+t=10, beta=0.005530, step_size=0.000553, steps=15
+  accept magnitude: 1.0000
+  score magnitude: 1.5714
+  noise magnitude: 0.7969
+  update magnitude: 0.0009
+t=1, beta=0.001117, step_size=0.000112, steps=15
+  accept magnitude: 1.0000
+  score magnitude: 1.7374
+  noise magnitude: 0.7965
+  update magnitude: 0.0002
+method=MALA, steps=15, step_scale=0.1
+mean = 0.14514335989952087
+var  = 9.259224891662598
+t=90, beta=0.188753, step_size=0.094376, steps=3
+  accept magnitude: 0.9949
+  score magnitude: 0.7436
+  noise magnitude: 0.7989
+  update magnitude: 0.0702
+t=50, beta=0.031546, step_size=0.015773, steps=3
+  accept magnitude: 0.9990
+  score magnitude: 0.9649
+  noise magnitude: 0.8018
+  update magnitude: 0.0152
+t=10, beta=0.005530, step_size=0.002765, steps=3
+  accept magnitude: 0.9997
+  score magnitude: 1.5767
+  noise magnitude: 0.7972
+  update magnitude: 0.0044
+t=1, beta=0.001117, step_size=0.000558, steps=3
+  accept magnitude: 1.0000
+  score magnitude: 1.7308
+  noise magnitude: 0.8005
+  update magnitude: 0.0010
+method=MALA, steps=3, step_scale=0.5
+mean = 0.1361670345067978
+var  = 9.266156196594238
+t=90, beta=0.188753, step_size=0.094376, steps=5
+  accept magnitude: 0.9944
+  score magnitude: 0.7452
+  noise magnitude: 0.8025
+  update magnitude: 0.0703
+t=50, beta=0.031546, step_size=0.015773, steps=5
+  accept magnitude: 0.9990
+  score magnitude: 0.9621
+  noise magnitude: 0.8019
+  update magnitude: 0.0152
+t=10, beta=0.005530, step_size=0.002765, steps=5
+  accept magnitude: 0.9996
+  score magnitude: 1.5604
+  noise magnitude: 0.7964
+  update magnitude: 0.0043
+t=1, beta=0.001117, step_size=0.000558, steps=5
+  accept magnitude: 1.0000
+  score magnitude: 1.7195
+  noise magnitude: 0.7937
+  update magnitude: 0.0010
+method=MALA, steps=5, step_scale=0.5
+mean = 0.15506093204021454
+var  = 9.248347282409668
+t=90, beta=0.188753, step_size=0.094376, steps=10
+  accept magnitude: 0.9949
+  score magnitude: 0.7466
+  noise magnitude: 0.7964
+  update magnitude: 0.0705
+t=50, beta=0.031546, step_size=0.015773, steps=10
+  accept magnitude: 0.9990
+  score magnitude: 0.9683
+  noise magnitude: 0.7996
+  update magnitude: 0.0153
+t=10, beta=0.005530, step_size=0.002765, steps=10
+  accept magnitude: 0.9997
+  score magnitude: 1.5715
+  noise magnitude: 0.7938
+  update magnitude: 0.0043
+t=1, beta=0.001117, step_size=0.000558, steps=10
+  accept magnitude: 0.9999
+  score magnitude: 1.7059
+  noise magnitude: 0.8002
+  update magnitude: 0.0010
+method=MALA, steps=10, step_scale=0.5
+mean = 0.17926745116710663
+var  = 9.261406898498535
+t=90, beta=0.188753, step_size=0.094376, steps=15
+  accept magnitude: 0.9944
+  score magnitude: 0.7445
+  noise magnitude: 0.8024
+  update magnitude: 0.0703
+t=50, beta=0.031546, step_size=0.015773, steps=15
+  accept magnitude: 0.9989
+  score magnitude: 0.9573
+  noise magnitude: 0.8025
+  update magnitude: 0.0151
+t=10, beta=0.005530, step_size=0.002765, steps=15
+  accept magnitude: 0.9998
+  score magnitude: 1.5651
+  noise magnitude: 0.7996
+  update magnitude: 0.0043
+t=1, beta=0.001117, step_size=0.000558, steps=15
+  accept magnitude: 1.0000
+  score magnitude: 1.6978
+  noise magnitude: 0.8017
+  update magnitude: 0.0009
+method=MALA, steps=15, step_scale=0.5
+mean = 0.19849830865859985
+var  = 9.288613319396973
+t=90, beta=0.188753, step_size=0.000189, steps=3
+  accept magnitude: 1.0000
+  score magnitude: 0.7598
+  noise magnitude: 0.7953
+  update magnitude: 0.0001
+t=50, beta=0.031546, step_size=0.000032, steps=3
+  accept magnitude: 1.0000
+  score magnitude: 0.4619
+  noise magnitude: 0.7959
+  update magnitude: 0.0000
+t=10, beta=0.005530, step_size=0.000006, steps=3
+  accept magnitude: 1.0000
+  score magnitude: 1.1213
+  noise magnitude: 0.7957
+  update magnitude: 0.0000
+t=1, beta=0.001117, step_size=0.000001, steps=3
+  accept magnitude: 1.0000
+  score magnitude: 1.2774
+  noise magnitude: 0.7984
+  update magnitude: 0.0000
+method=MALA, steps=3, step_scale=0.001
+mean = 0.04554060101509094
+var  = 6.4380292892456055
+t=90, beta=0.188753, step_size=0.000189, steps=5
+  accept magnitude: 1.0000
+  score magnitude: 0.7599
+  noise magnitude: 0.7956
+  update magnitude: 0.0001
+t=50, beta=0.031546, step_size=0.000032, steps=5
+  accept magnitude: 1.0000
+  score magnitude: 0.4601
+  noise magnitude: 0.7961
+  update magnitude: 0.0000
+t=10, beta=0.005530, step_size=0.000006, steps=5
+  accept magnitude: 1.0000
+  score magnitude: 1.1205
+  noise magnitude: 0.7980
+  update magnitude: 0.0000
+t=1, beta=0.001117, step_size=0.000001, steps=5
+  accept magnitude: 1.0000
+  score magnitude: 1.2780
+  noise magnitude: 0.7961
+  update magnitude: 0.0000
+method=MALA, steps=5, step_scale=0.001
+mean = 0.05888786166906357
+var  = 6.432250022888184
+t=90, beta=0.188753, step_size=0.000189, steps=10
+  accept magnitude: 1.0000
+  score magnitude: 0.7546
+  noise magnitude: 0.7972
+  update magnitude: 0.0001
+t=50, beta=0.031546, step_size=0.000032, steps=10
+  accept magnitude: 1.0000
+  score magnitude: 0.4599
+  noise magnitude: 0.7961
+  update magnitude: 0.0000
+t=10, beta=0.005530, step_size=0.000006, steps=10
+  accept magnitude: 1.0000
+  score magnitude: 1.1198
+  noise magnitude: 0.7973
+  update magnitude: 0.0000
+t=1, beta=0.001117, step_size=0.000001, steps=10
+  accept magnitude: 1.0000
+  score magnitude: 1.2798
+  noise magnitude: 0.8002
+  update magnitude: 0.0000
+method=MALA, steps=10, step_scale=0.001
+mean = 0.056857556104660034
+var  = 6.432196617126465
+t=90, beta=0.188753, step_size=0.000189, steps=15
+  accept magnitude: 1.0000
+  score magnitude: 0.7585
+  noise magnitude: 0.7985
+  update magnitude: 0.0001
+t=50, beta=0.031546, step_size=0.000032, steps=15
+  accept magnitude: 1.0000
+  score magnitude: 0.4593
+  noise magnitude: 0.7981
+  update magnitude: 0.0000
+t=10, beta=0.005530, step_size=0.000006, steps=15
+  accept magnitude: 1.0000
+  score magnitude: 1.1219
+  noise magnitude: 0.7982
+  update magnitude: 0.0000
+t=1, beta=0.001117, step_size=0.000001, steps=15
+  accept magnitude: 1.0000
+  score magnitude: 1.2758
+  noise magnitude: 0.7993
+  update magnitude: 0.0000
+method=MALA, steps=15, step_scale=0.001
+mean = 0.05519294738769531
+var  = 6.429454326629639
+t=90, beta=0.188753, step_size=0.001888, steps=3
+  accept magnitude: 1.0000
+  score magnitude: 0.7574
+  noise magnitude: 0.7999
+  update magnitude: 0.0014
+t=50, beta=0.031546, step_size=0.000315, steps=3
+  accept magnitude: 1.0000
+  score magnitude: 0.4576
+  noise magnitude: 0.7996
+  update magnitude: 0.0001
+t=10, beta=0.005530, step_size=0.000055, steps=3
+  accept magnitude: 1.0000
+  score magnitude: 1.1219
+  noise magnitude: 0.7976
+  update magnitude: 0.0001
+t=1, beta=0.001117, step_size=0.000011, steps=3
+  accept magnitude: 1.0000
+  score magnitude: 1.2773
+  noise magnitude: 0.7970
+  update magnitude: 0.0000
+method=MALA, steps=3, step_scale=0.01
+mean = 0.0727274939417839
+var  = 6.4204487800598145
+t=90, beta=0.188753, step_size=0.001888, steps=5
+  accept magnitude: 1.0000
+  score magnitude: 0.7633
+  noise magnitude: 0.7994
+  update magnitude: 0.0014
+t=50, beta=0.031546, step_size=0.000315, steps=5
+  accept magnitude: 1.0000
+  score magnitude: 0.4609
+  noise magnitude: 0.7986
+  update magnitude: 0.0001
+t=10, beta=0.005530, step_size=0.000055, steps=5
+  accept magnitude: 1.0000
+  score magnitude: 1.1194
+  noise magnitude: 0.7990
+  update magnitude: 0.0001
+t=1, beta=0.001117, step_size=0.000011, steps=5
+  accept magnitude: 1.0000
+  score magnitude: 1.2777
+  noise magnitude: 0.7993
+  update magnitude: 0.0000
+method=MALA, steps=5, step_scale=0.01
+mean = 0.06410114467144012
+var  = 6.425966262817383
+t=90, beta=0.188753, step_size=0.001888, steps=10
+  accept magnitude: 1.0000
+  score magnitude: 0.7590
+  noise magnitude: 0.7955
+  update magnitude: 0.0014
+t=50, beta=0.031546, step_size=0.000315, steps=10
+  accept magnitude: 1.0000
+  score magnitude: 0.4580
+  noise magnitude: 0.7966
+  update magnitude: 0.0001
+t=10, beta=0.005530, step_size=0.000055, steps=10
+  accept magnitude: 1.0000
+  score magnitude: 1.1203
+  noise magnitude: 0.7967
+  update magnitude: 0.0001
+t=1, beta=0.001117, step_size=0.000011, steps=10
+  accept magnitude: 1.0000
+  score magnitude: 1.2796
+  noise magnitude: 0.7980
+  update magnitude: 0.0000
+method=MALA, steps=10, step_scale=0.01
+mean = 0.058770354837179184
+var  = 6.45400333404541
