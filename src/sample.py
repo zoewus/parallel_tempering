@@ -26,7 +26,11 @@ def compute_score(model, x, t, k, sigma, dataset_config):
 	eps_hat = model(x, t_batch)
 	a_bar = alpha_bars[t]
 
-	return -eps_hat * temp_t / torch.sqrt(1.0 - a_bar)
+	score = -eps_hat * temp_t / torch.sqrt(1.0 - a_bar)
+
+	score_rie = metric_tensor(1.0, score)
+
+	return score_rie
 
 
 @torch.no_grad()
@@ -79,7 +83,6 @@ def compute_correction(model, x, x_hat, t, step_size, k, sigma, dataset_config):
 	"""Computes acceptance rate for MALA and returns corrected x"""
 	f = compute_score_integral(model, x, x_hat, t, k, sigma, dataset_config)
 	log_transition_ratio = compute_log_transition_ratio(model, x, x_hat, t, step_size, k, sigma, dataset_config)
-	sigma_t = torch.sqrt(1 - alpha_bars[t])
 
 	a = torch.clamp(torch.exp(f + log_transition_ratio), max=1.0) # note: we do f and not f/sigma_t because sigma term already in score_hat
 	u = torch.rand_like(a)
@@ -116,11 +119,11 @@ def metric_tensor(tau, score):
 	
 		h_start = i * increment
 
-		score_patch = score[:, :, h_start : h_start + increment ].detach().clone()
+		score_patch = score[h_start : h_start + increment, : ].detach().clone()
 
 		new_score_patch = metric_tensor_patch(tau, score_patch)
 
-		score[:, :, h_start : h_start + increment ] = new_score_patch
+		score[h_start : h_start + increment, :] = new_score_patch
 
 	return score
 

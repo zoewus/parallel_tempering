@@ -217,7 +217,7 @@ if __name__ == "__main__":
 
 	n_langevin_steps_list = [3, 5, 10, 15]
 
-	for k in [1.0]:
+	for k in [4.0]:
 
 		_ = samples_tuning(step_scale_list, n_langevin_steps_list, dataset_names, methods, k=k, sigma=None, x_limit=6)
 
