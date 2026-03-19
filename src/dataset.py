@@ -62,16 +62,7 @@ def compute_mixture_pdf(dataset_config, x_axis, k=1.0):
 
 
 @torch.no_grad()
-def compute_tsr_schedule(k, sigma, dataset_config, schedule=None):
-	"""Output shape: (N_DIFFUSION_STEPS, n_langevin_steps)"""
-
-	tsr = compute_tsr(k, sigma, dataset_config)
-
-	return tsr
-
-
-@torch.no_grad()
-def compute_tsr(k, sigma, dataset_config):
+def compute_tsr_schedule(k, sigma, dataset_config):
 	"""Computes temporal score rescaling coefficient. Outpit will be shape (N_DIFFUSION_STEPS, n_langevin_steps)"""
 	if sigma is None:
 		sigma = compute_sigma_0(dataset_config)

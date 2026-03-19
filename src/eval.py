@@ -116,7 +116,7 @@ def encode_dataset_name(name: str) -> str:
 	return base_map.get(name, name)
 
 
-def plot_samples_grid(dataset_names, methods, k=1.0, sigma=1.0,  x_limit=6, save_dir="figures", figsize_per_panel=(5,4)):
+def plot_samples_grid(dataset_names, methods, k=1.0, sigma=1.0,  x_limit=6, step_scale=None, n_langevin_steps=None, save_dir="figures", figsize_per_panel=(5,4)):
 	"""Generate samples and plot against true distribution"""
 	os.makedirs(save_dir, exist_ok=True)
 
@@ -139,8 +139,10 @@ def plot_samples_grid(dataset_names, methods, k=1.0, sigma=1.0,  x_limit=6, save
 
 		pdf = compute_mixture_pdf(dataset_config, x_axis, k)
 
-		step_scale = dataset_config["step_scale"]
-		n_langevin_steps = dataset_config["n_langevin_steps"]
+		if step_scale is None:
+			step_scale = dataset_config["step_scale"]
+		if n_langevin_steps is None:
+			n_langevin_steps = dataset_config["n_langevin_steps"]
 
 		samples = {}
 
@@ -215,7 +217,7 @@ if __name__ == "__main__":
 
 	n_langevin_steps_list = [3, 5, 10, 15]
 
-	for k in [4.0, 1.0, 0.25]:
+	for k in [1.0]:
 
 		_ = samples_tuning(step_scale_list, n_langevin_steps_list, dataset_names, methods, k=k, sigma=None, x_limit=6)
 

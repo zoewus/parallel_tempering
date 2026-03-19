@@ -20,13 +20,12 @@ ckpt_dir = CKPT_DIR
 def compute_score(model, x, t, k, sigma, dataset_config):
 	"""Computes score = - epsilon / √(1 - α_bar)"""
 	temp_schedule = compute_tsr_schedule(k, sigma, dataset_config)
-
 	temp_t = temp_schedule[t]
 
 	t_batch = t * torch.ones_like(x)
-
 	eps_hat = model(x, t_batch)
 	a_bar = alpha_bars[t]
+
 	return -eps_hat * temp_t / torch.sqrt(1.0 - a_bar)
 
 
@@ -60,7 +59,7 @@ def compute_log_transition_ratio(model, x, x_hat, t, step_size, k, sigma, datase
 
 @torch.no_grad()
 def compute_score_integral(model, x, x_hat, t, k, sigma, dataset_config, n_segments=10):
-	"""Computes energy of a noise-based model through integration"""
+	"""Computes energy of a noise-based model thrfugh integration"""
 	s = torch.linspace(0.0, 1.0, n_segments, device=device)
 	
 	r = r_curve_func(x, x_hat, s)
@@ -69,7 +68,7 @@ def compute_score_integral(model, x, x_hat, t, k, sigma, dataset_config, n_segme
 	r_flat = r.reshape(-1, 1)
 	score_hat = compute_score(model, r_flat, t, k, sigma, dataset_config).reshape(r.shape[0], -1) 
 
-	integrand = score_hat * r_deriv
+	integrand = - score_hat * r_deriv
 	f = -torch.trapz(integrand, s, dim=1).unsqueeze(-1)
 	
 	return f
@@ -80,6 +79,7 @@ def compute_correction(model, x, x_hat, t, step_size, k, sigma, dataset_config):
 	"""Computes acceptance rate for MALA and returns corrected x"""
 	f = compute_score_integral(model, x, x_hat, t, k, sigma, dataset_config)
 	log_transition_ratio = compute_log_transition_ratio(model, x, x_hat, t, step_size, k, sigma, dataset_config)
+	sigma_t = torch.sqrt(1 - alpha_bars[t])
 
 	a = torch.clamp(torch.exp(f + log_transition_ratio), max=1.0) # note: we do f and not f/sigma_t because sigma term already in score_hat
 	u = torch.rand_like(a)
@@ -91,7 +91,7 @@ def compute_correction(model, x, x_hat, t, step_size, k, sigma, dataset_config):
 
 @torch.no_grad()
 def metric_tensor_patch(tau, score_patch):
-
+	"""Computes metric tensor for a single chunk of the samples"""
 	bs_increment, s = score_patch.shape
 	outer_product = torch.einsum("bc,bd-> cd", score_patch, score_patch) / (bs_increment * s)
 
@@ -105,8 +105,9 @@ def metric_tensor_patch(tau, score_patch):
 
 	return new_score_patch
 
-def metric_tensor(tau, score):
 
+def metric_tensor(tau, score):
+	"""Computes scaled score for all samples"""
 	bs, s = score.shape # score is of shape (bs, 1)
 	num_patches = 8
 	increment = bs // num_patches # divide particles into the number of batches we want
@@ -123,6 +124,7 @@ def metric_tensor(tau, score):
 
 	return score
 
+
 # ---------- main sampling function (sampling) ----------
 @torch.no_grad()
 def sampling(model, dataset_config, method, k=1.0, sigma=1.0, step_scale=None, n_langevin_steps=None):
@@ -133,13 +135,10 @@ def sampling(model, dataset_config, method, k=1.0, sigma=1.0, step_scale=None, n
 	x = torch.randn(n_samples, 1, device=device)
 
 	for t in ts_desc:
-	  
 		alpha_t = alphas[t]
 		beta_t = betas[t]
-		alpha_bar_t = alpha_bars[t]
 		sqrt_alpha_t = torch.sqrt(alpha_t)
 		sqrt_beta_t = torch.sqrt(beta_t)
-
 
 		if method in ["DDPM"]:
 			score_hat = compute_score(model, x, t, k, sigma, dataset_config)
@@ -147,7 +146,6 @@ def sampling(model, dataset_config, method, k=1.0, sigma=1.0, step_scale=None, n
 			x = (x + beta_t * score_hat) / sqrt_alpha_t + sqrt_beta_t * noise
 
 		elif method in ["ULA", "MALA"]:
-
 			score_hat = compute_score(model, x, t, k, sigma, dataset_config)
 			noise = torch.randn_like(x)
 			x = (x + beta_t * score_hat) / sqrt_alpha_t + sqrt_beta_t * noise
@@ -157,26 +155,22 @@ def sampling(model, dataset_config, method, k=1.0, sigma=1.0, step_scale=None, n
 			for langevin_step in range(n_langevin_steps):
 
 				score_hat = compute_score(model, x, t, k, sigma, dataset_config)
-
 				noise = torch.randn_like(x)
-
 				x_hat = x + step_size * score_hat + torch.sqrt(2.0 * step_size) * noise	
-				
-				if method == "MALA":
-					x, a = compute_correction(model, x, x_hat, t, step_size, k, sigma, dataset_config)
 
-						# Add this inside the ULA loop
+				if method == "ULA":
+					x = x_hat
+				
+				elif method == "MALA":
+					x, a = compute_correction(model, x, x_hat, t, step_size, k, sigma, dataset_config)
 					if t in [90, 50, 10, 1] and langevin_step == 0:
 						print(f"t={t}, beta={betas[t]:.6f}, step_size={step_size:.6f}, steps={n_langevin_steps:d}")
 						print(f"  accept magnitude: {a.abs().mean():.4f}")
 						print(f"  score magnitude: {score_hat.abs().mean():.4f}")
 						print(f"  noise magnitude: {noise.abs().mean():.4f}")
 						print(f"  update magnitude: {(step_size * score_hat).abs().mean():.4f}")
-				elif method == "ULA":
-					x = x_hat
 
 		else:
-
 			raise ValueError(f"Unknown method: {method}. Expected 'DDPM', 'ULA', or 'MALA'.")
 
 	return x
